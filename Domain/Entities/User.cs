@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities;
@@ -6,8 +8,13 @@ public class User : IdentityUser<int>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public int Age { get; set; }
     public string Address { get; set; }
+
     public DateTime BirthDate { get; set; }
     public bool IsActive { get; set; }
-    public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
+    public DateTime RegistrationDate { get; set; } 
+    [NotMapped]
+    public IFormFile? ProfileImage { get; set; }
+    public string? ProfileImagePath { get; set; }
 }

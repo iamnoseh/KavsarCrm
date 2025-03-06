@@ -10,6 +10,7 @@ using Infrastructure.Interfaces;
 using Infrastructure.Interfaces.IServices;
 using Infrastructure.Responses;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services;
 
@@ -22,36 +23,37 @@ public class BannerService(
     private readonly string[] _allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
     private const long MaxFileSize = 10 * 1024 * 1024; // 10MB 
 
-    public async Task<Response<List<GetBannerDto>>> GetAllBanners(string language = "en")
+    public async Task<Response<List<GetBannerDto>>> GetAllBanners(string language = "En")
     {
+        var bannerType = typeof(Banner);
         var banners = await bannerRepository.GetAll();
         var dto = banners.Select(banner => new GetBannerDto
         {
             Id = banner.Id,
-            Title = GetLocalizedTitle(banner, language),
-            Description = GetLocalizedDescription(banner, language),
+            Title = bannerType.GetProperty("Title" + language)?.GetValue(banner)?.ToString(),
+            Description = bannerType.GetProperty("Description" + language)?.GetValue(banner)?.ToString(),
             ImagePath = banner.ImagePath
         }).ToList();
 
         return new Response<List<GetBannerDto>>(dto) { Message = "Banners retrieved successfully" };
     }
 
-    public async Task<Response<GetBannerDto>> GetBannerById(int id, string language = "en")
+    public async Task<Response<GetBannerDto>> GetBannerById(int id, string language = "En")
     {
         var banner = await bannerRepository.GetBanner(id);
         if (banner == null)
             return new Response<GetBannerDto>(System.Net.HttpStatusCode.NotFound, "Banner not found");
 
+        var bannerType = typeof(Banner);
         var dto = new GetBannerDto
         {
             Id = banner.Id,
-            Title = GetLocalizedTitle(banner, language),
-            Description = GetLocalizedDescription(banner, language),
+            Title = bannerType.GetProperty("Title" + language)?.GetValue(banner)?.ToString(),
+            Description = bannerType.GetProperty("Description" + language)?.GetValue(banner)?.ToString(),
             ImagePath = banner.ImagePath
         };
         return new Response<GetBannerDto>(dto) { Message = "Banner retrieved successfully" };
     }
-
     public async Task<Response<string>> CreateBanner(CreateBannerDto dto)
     {
         if (dto.ImageFile == null || dto.ImageFile.Length == 0)
@@ -150,26 +152,7 @@ public class BannerService(
             : new Response<string>(System.Net.HttpStatusCode.InternalServerError, "Error deleting banner");
     }
 
-    private string GetLocalizedTitle(Banner banner, string language)
-    {
-        return language.ToLower() switch
-        {
-            "tj" => banner.TitleTj,
-            "ru" => banner.TitleRu,
-            "en" => banner.TitleEn,
-            _ => banner.TitleEn
-        };
-    }
 
-    private string GetLocalizedDescription(Banner banner, string language)
-    {
-        return language.ToLower() switch
-        {
-            "tj" => banner.DescriptionTj,
-            "ru" => banner.DescriptionRu,
-            "en" => banner.DescriptionEn,
-            _ => banner.DescriptionEn
-        };
-    }
+
 }
 
