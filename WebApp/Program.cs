@@ -23,6 +23,9 @@ builder.Services.AddIdentity<Domain.Entities.User, IdentityRole<int>>()
 
 
 builder.Services.AddScoped<IBannerRepository, BannerRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
+builder.Services.AddScoped<IRequestService, RequestService>();
+
 
 
 builder.Services.AddAutoMapper(typeof(EntityProfile));
