@@ -17,13 +17,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//baroi dastrasii har user ba dannihoi khud
+builder.Services.AddHttpContextAccessor();
 // DbContext
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-builder.Services.AddIdentity<Domain.Entities.User, IdentityRole<int>>()
+builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 
@@ -43,12 +44,15 @@ builder.Services.AddScoped<IBranchService, BranchService>();
 builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 var uploadPath = builder.Configuration.GetValue<string>("UploadPath") ?? "wwwroot";
-builder.Services.AddScoped<IUserService>(provider =>
+builder.Services.AddScoped<IUserService>(sp =>
     new UserService(
-        provider.GetRequiredService<IUserRepository>(),
-        provider.GetRequiredService<IMapper>(),
-        uploadPath)
-);
+        sp.GetRequiredService<IUserRepository>(),
+        sp.GetRequiredService<IMapper>(),
+        sp.GetRequiredService<IHttpContextAccessor>(),
+        sp.GetRequiredService<UserManager<User>>(),
+        uploadPath
+    ));
+
 
 builder.Services.AddAutoMapper(typeof(EntityProfile));
 builder.Services.AddMemoryCache();

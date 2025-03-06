@@ -14,4 +14,8 @@ public interface IUserRepository
     Task AddAsync(User user);
     Task UpdateAsync(User user);
     Task DeleteAsync(User user);
+    
+    Task<List<User>> GetUsersByRoleAsync(string role, BaseFilter filter);
+    Task<int> CountUsersByRoleAsync(string role);
+    Task<User?> GetUserByIdAsync(int id, string role);
 }

@@ -6,10 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Repositories;
 
-public class UserRepository(DataContext context) : IUserRepository
+public class UserRepository(DataContext context, UserManager<User> _userManager) : IUserRepository
 {
     public async Task AddAsync(User user)
     {
@@ -51,4 +52,41 @@ public class UserRepository(DataContext context) : IUserRepository
         context.Users.Update(user);
         await context.SaveChangesAsync();
     }
+    
+    public async Task<List<User>> GetUsersByRoleAsync(string role, BaseFilter filter)
+    {
+        var users = await context.Users
+            .Where(u => context.UserRoles.Any(ur => ur.UserId == u.Id && 
+                                                     context.Roles.Any(r => r.Id == ur.RoleId && r.Name == role)))
+            .Skip((filter.PageNumber - 1) * filter.PageSize)
+            .Take(filter.PageSize)
+            .ToListAsync();
+
+        return users;
+    }
+
+    public async Task<int> CountUsersByRoleAsync(string role)
+    {
+        return await context.Users
+            .CountAsync(u => context.UserRoles.
+                Any(ur => ur.UserId == u.Id &&
+                          context.Roles.Any(r => r.Id == ur.RoleId && r.Name == role)));
+    }
+    
+    public async Task<User?> GetUserByIdAsync(int id, string role)
+    {
+        var user = await context.Users
+            .Where(u => u.Id == id)
+            .FirstOrDefaultAsync();
+
+        if (user == null)
+            return null;
+
+        var roles = await _userManager.GetRolesAsync(user);
+        if (!roles.Contains(role))
+            return null;
+
+        return user;
+    }
+
 }
