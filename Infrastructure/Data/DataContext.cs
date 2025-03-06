@@ -9,4 +9,9 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
 {
     public DbSet<Banner> Banners { get; set; } 
     public DbSet<Request> Requests { get; set; }
+    public DbSet<Branch> Branches { get; set; }
+    public DbSet<Like> Likes { get; set; }
+    public DbSet<Comment> Comments { get; set; }
+    public DbSet<News> News { get; set; }
+    public DbSet<User> Users { get; set; }
 }

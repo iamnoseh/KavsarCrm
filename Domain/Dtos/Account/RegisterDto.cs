@@ -14,6 +14,8 @@ public class RegisterDto
     public string UserName { get; set; }
     [Required]
     public int Age { get; set; }
+    public string PhoneNumber { get; set; }
+    public string Address { get; set; }
     [Required]
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; }
@@ -24,7 +26,6 @@ public class RegisterDto
     [DataType(DataType.Password)]
     [Compare("Password")]
     public string ConfirmPassword { get; set; }
-    public string Address { get; set; }
     
     public IFormFile? ProfileImage { get; set; }
 }

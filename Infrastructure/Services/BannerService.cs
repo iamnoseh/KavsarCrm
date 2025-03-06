@@ -151,8 +151,6 @@ public class BannerService(
             ? new Response<string>("Banner deleted successfully")
             : new Response<string>(System.Net.HttpStatusCode.InternalServerError, "Error deleting banner");
     }
-
-
-
+    
 }
 

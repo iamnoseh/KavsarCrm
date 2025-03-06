@@ -64,6 +64,7 @@ namespace Infrastructure.Services
                 Age = model.Age,
                 ProfileImagePath = profileImagePath,
                 Address = model.Address,
+                PhoneNumber = model.PhoneNumber,
             };
 
             var result = await userManager.CreateAsync(newUser, model.Password);

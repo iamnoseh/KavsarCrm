@@ -4,7 +4,6 @@ namespace Infrastructure.Interfaces;
 
 public interface IRequestRepository
 {
-    
     Task<List<Request>> GetAll();
     Task<Request?> GetRequest(int id);
     Task<int> CreateRequest(Request request);

@@ -39,6 +39,16 @@ builder.Services.AddScoped<IAccountService>(sp =>
     ));
 builder.Services.AddScoped<SeedData>();
 
+builder.Services.AddScoped<IBranchService, BranchService>();
+builder.Services.AddScoped<IBranchRepository, BranchRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+var uploadPath = builder.Configuration.GetValue<string>("UploadPath") ?? "wwwroot";
+builder.Services.AddScoped<IUserService>(provider =>
+    new UserService(
+        provider.GetRequiredService<IUserRepository>(),
+        provider.GetRequiredService<IMapper>(),
+        uploadPath)
+);
 
 builder.Services.AddAutoMapper(typeof(EntityProfile));
 builder.Services.AddMemoryCache();

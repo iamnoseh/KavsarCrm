@@ -17,4 +17,8 @@ public class User : IdentityUser<int>
     [NotMapped]
     public IFormFile? ProfileImage { get; set; }
     public string? ProfileImagePath { get; set; }
+    
+    public List<Like> Likes { get; set; } = new();
+    public List<Comment> Comments { get; set; } = new();
+    public List<News> News { get; set; } = new();
 }
