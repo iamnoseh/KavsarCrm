@@ -13,5 +13,6 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
     public DbSet<Like> Likes { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<News> News { get; set; }
+    public DbSet<ChooseUs> ChooseUss{ get; set; }
     public DbSet<User> Users { get; set; }
 }

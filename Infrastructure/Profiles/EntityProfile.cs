@@ -20,6 +20,10 @@ public class EntityProfile : Profile
         CreateMap<CreateRequestDto, Request>().ReverseMap();
         CreateMap<UpdateRequestDto, Request>().ReverseMap();
 
+        CreateMap<ChooseUs, CreateChooseUsDto>().ReverseMap();
+        CreateMap<ChooseUs, UpdateChooseUsDto>().ReverseMap();
+        CreateMap<ChooseUs, GetChooseUsDto>().ReverseMap();
+
         CreateMap<Branch, GetBranchDto>().ReverseMap();
         CreateMap<UpdateBranchDto, Branch>().ReverseMap();
         CreateMap<CreateBranchDto, Branch>().ReverseMap();

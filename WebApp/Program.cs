@@ -38,6 +38,8 @@ builder.Services.AddScoped<IAccountService>(sp =>
         sp.GetRequiredService<IConfiguration>(),
         builder.Environment.WebRootPath
     ));
+builder.Services.AddScoped<IChooseUsRepository, ChooseUsRepository>();
+// builder.Services.AddScoped<IChooseUsService, ChooseUsService>();
 builder.Services.AddScoped<SeedData>();
 
 builder.Services.AddScoped<IBranchService, BranchService>();
@@ -51,6 +53,12 @@ builder.Services.AddScoped<IUserService>(sp =>
         sp.GetRequiredService<IHttpContextAccessor>(),
         sp.GetRequiredService<UserManager<User>>(),
         uploadPath
+    ));
+builder.Services.AddScoped<IChooseUsService>(sp =>
+    new ChooseUsService(
+        sp.GetRequiredService<IChooseUsRepository>(),
+        sp.GetRequiredService<IMapper>(),
+        uploadPath 
     ));
 
 
