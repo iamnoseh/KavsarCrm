@@ -27,14 +27,14 @@ public class AccountController(IAccountService service) : ControllerBase
     }
     
     [HttpPost("add-role-to-user")]
-    [Authorize(Roles = Roles.Admin)]
+    // [Authorize(Roles = Roles.Admin)]
     public async Task<Response<string>> AddRoleToUser(RoleDto request)
     {
         return await service.AddRoleToUser(request);
     }
     
     [HttpDelete("remove-role-from-user")]
-    [Authorize(Roles = Roles.Admin)]
+    // [Authorize(Roles = Roles.Admin)]
     public async Task<Response<string>> RemoveRoleFromUser(RoleDto request)
     {
         return await service.RemoveRoleFromUser(request);

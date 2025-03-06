@@ -21,10 +21,9 @@ namespace Infrastructure.Services
         UserManager<User> userManager,
         RoleManager<IdentityRole<int>> roleManager,
         IConfiguration configuration,
-        string uploadPath)
-        : IAccountService
+        string uploadPath) : IAccountService
     {
-        private readonly string[] _allowedImageExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+        private readonly string[] _allowedImageExtensions = [".jpg", ".jpeg", ".png", ".gif"];
         private const long MaxImageSize = 10 * 1024 * 1024; // 10MB
 
         public async Task<Response<string>> Register(RegisterDto model)
@@ -49,7 +48,7 @@ namespace Infrastructure.Services
                 var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
                 var filePath = Path.Combine(profilesFolder, uniqueFileName);
 
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                await using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await model.ProfileImage.CopyToAsync(fileStream);
                 }
@@ -97,10 +96,10 @@ namespace Infrastructure.Services
             if (user == null)
                 return new Response<string>(HttpStatusCode.NotFound, "User not found");
 
-            if (!await roleManager.RoleExistsAsync(userRole.RoleId))
+            if (!await roleManager.RoleExistsAsync(userRole.RoleName))
                 return new Response<string>(HttpStatusCode.BadRequest, "Role does not exist");
 
-            var result = await userManager.AddToRoleAsync(user, userRole.RoleId);
+            var result = await userManager.AddToRoleAsync(user, userRole.RoleName);
             if (!result.Succeeded)
             {
                 var errors = string.Join("; ", result.Errors.Select(e => e.Description));
@@ -116,7 +115,7 @@ namespace Infrastructure.Services
             if (user == null)
                 return new Response<string>(HttpStatusCode.NotFound, "User not found");
 
-            var result = await userManager.RemoveFromRoleAsync(user, userRole.RoleId);
+            var result = await userManager.RemoveFromRoleAsync(user, userRole.RoleName);
             if (!result.Succeeded)
             {
                 var errors = string.Join("; ", result.Errors.Select(e => e.Description));

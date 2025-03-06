@@ -14,6 +14,7 @@ using Infrastructure.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,8 @@ builder.Services.AddScoped<IAccountService>(sp =>
         sp.GetRequiredService<IConfiguration>(),
         builder.Environment.WebRootPath
     ));
+builder.Services.AddScoped<SeedData>();
+
 
 builder.Services.AddAutoMapper(typeof(EntityProfile));
 builder.Services.AddMemoryCache();
@@ -64,24 +67,24 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        In = ParameterLocation.Header,
         Description = "Введите JWT через Bearer",
         Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+        Type = SecuritySchemeType.ApiKey
     });
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement {
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement {
         {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            new OpenApiSecurityScheme
             {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                Reference = new OpenApiReference
                 {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
                 }
             },
-            new string[] { }
+            []
         }
     });
 });
@@ -105,8 +108,8 @@ try
 {
     using var scope = app.Services.CreateScope();
     var serviceProvider = scope.ServiceProvider;
-    var datacontext = serviceProvider.GetRequiredService<DataContext>();
-    await datacontext.Database.MigrateAsync();
+    var dataContext = serviceProvider.GetRequiredService<DataContext>();
+    await dataContext.Database.MigrateAsync();
     var seeder = serviceProvider.GetRequiredService<SeedData>();
     await seeder.SeedRole();
     await seeder.SeedUser();
