@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SwaggerThemes;
 
 var builder = WebApplication.CreateBuilder(args);
 //baroi dastrasii har user ba dannihoi khud
@@ -48,6 +49,9 @@ builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 
 builder.Services.AddScoped<IBranchService, BranchService>();
 builder.Services.AddScoped<IBranchRepository, BranchRepository>();
+
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 var uploadPath = builder.Configuration.GetValue<string>("UploadPath") ?? "wwwroot";
@@ -170,7 +174,11 @@ app.UseStaticFiles(new StaticFileOptions
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    // app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {  
+        c.AddThemes(app);  
+    });
 }
 
 app.UseHttpsRedirection();

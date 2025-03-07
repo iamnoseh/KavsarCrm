@@ -15,11 +15,11 @@ namespace Domain.Entities
 
         public int LikeCount => Likes?.Count ?? 0;
 
-        public int? PatternCommentId { get; set; }  // ислоҳ: nullable шуд
+        public int? PatternCommentId { get; set; }  
         [ForeignKey("PatternCommentId")]
         public Comment? PatternComment { get; set; }
 
-        public List<Comment> PatternComments { get; set; } = new();  // ислоҳ: инициализатсия карда шуд
+        public List<Comment> PatternComments { get; set; } = new();  
 
         [Required]
         public int NewsId { get; set; }
