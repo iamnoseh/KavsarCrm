@@ -1,20 +1,25 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace Domain.Dtos
+namespace Domain.Dtos;
+
+public class CreateNewsDto
 {
-    public class CreateNewsDto
-    {
-        [Required]
-        [MaxLength(100, ErrorMessage = "Title cannot be longer than 100 characters.")]
-        public string Title { get; set; }
+    [Required, MaxLength(100)]
+    public string TitleTj { get; set; }
+    [Required, MaxLength(100)]
+    public string TitleRu { get; set; }
+    [Required, MaxLength(100)]
+    public string TitleEn { get; set; }
 
-        [Required]
-        public string Content { get; set; }
-
-        [Required]
-        public int UserId { get; set; }
-
-        public IFormFile? Media { get; set; }
-    }
+    [Required]
+    public string ContentTj { get; set; }
+    [Required]
+    public string ContentEn { get; set; }
+    [Required]
+    public string ContentRu { get; set; }
+    
+    public IFormFile Media { get; set; }
+    
+    public int UserId { get; set; }
 }

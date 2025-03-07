@@ -58,7 +58,7 @@ public class CourseService (ICourseRepository courseRepository,string uploadPath
                 "Invalid image format. Allowed formats: .jpg, .jpeg, .png, .gif");
 
 
-        var uploadsFolder = Path.Combine(uploadPath, "uploads", "courses");
+        var uploadsFolder = Path.Combine(uploadPath, "uploads", "course");
         if (!Directory.Exists(uploadsFolder))
             Directory.CreateDirectory(uploadsFolder);
 
@@ -80,7 +80,7 @@ public class CourseService (ICourseRepository courseRepository,string uploadPath
             Duration = courseDto.Duration,
             Price = courseDto.Price,
             CreatedAt = DateTime.UtcNow,
-            ImagePath = $"/uploads/banners/{uniqueFileName}",
+            ImagePath = $"/uploads/course/{uniqueFileName}",
         };
         int res = await courseRepository.Create(course);
         return res > 0
@@ -113,7 +113,7 @@ public class CourseService (ICourseRepository courseRepository,string uploadPath
                 return new Response<string>(System.Net.HttpStatusCode.BadRequest,
                     "Invalid image format. Allowed formats: .jpg, .jpeg, .png, .gif");
 
-            var uploadsFolder = Path.Combine(uploadPath, "uploads", "banners");
+            var uploadsFolder = Path.Combine(uploadPath, "uploads", "course");
             if (!Directory.Exists(uploadsFolder))
                 Directory.CreateDirectory(uploadsFolder);
 

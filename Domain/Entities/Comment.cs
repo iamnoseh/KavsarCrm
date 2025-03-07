@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
@@ -10,12 +11,20 @@ namespace Domain.Entities
 
         [Required]
         public int UserId { get; set; }
-        public virtual User User { get; set; }
+        public User User { get; set; } = null!;
+
+        public int LikeCount => Likes?.Count ?? 0;
+
+        public int? PatternCommentId { get; set; }  // ислоҳ: nullable шуд
+        [ForeignKey("PatternCommentId")]
+        public Comment? PatternComment { get; set; }
+
+        public List<Comment> PatternComments { get; set; } = new();  // ислоҳ: инициализатсия карда шуд
 
         [Required]
         public int NewsId { get; set; }
-        public virtual News News { get; set; }
+        public News News { get; set; } = null!;
 
-        public virtual List<Like> Likes { get; set; } = new();
+        public List<Like> Likes { get; set; } = new();
     }
 }

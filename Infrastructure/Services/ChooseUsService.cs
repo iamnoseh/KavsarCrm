@@ -137,7 +137,7 @@ namespace Infrastructure.Services
                     File.Delete(filePath);
             }
 
-           int res = await chooseUsRepository.DeleteChooseUs(chooseUs);
+            int res = await chooseUsRepository.DeleteChooseUs(chooseUs);
             return res > 0
                 ? new Response<string>(HttpStatusCode.OK, "ChooseUs deleted successfully")
                 : new Response<string>(HttpStatusCode.InternalServerError, "ChooseUs not deleted");

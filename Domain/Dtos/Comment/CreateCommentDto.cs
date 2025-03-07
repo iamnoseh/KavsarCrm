@@ -1,13 +1,13 @@
-using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Dtos;
-
-public class GetCommentDto
+public class CreateCommentDto
 {
-    public int Id { get; set; }
+    [Required]
     public string Content { get; set; }
+    [Required]
     public int UserId { get; set; }
-    public int LikeCount { get; set; }
     public int? PatternCommentId { get; set; }
+    [Required]
     public int NewsId { get; set; }
 }

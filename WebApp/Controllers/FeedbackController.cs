@@ -2,6 +2,8 @@ using Domain.Dtos.Feedback;
 using Domain.Filters;
 using Infrastructure.Interfaces;
 using Infrastructure.Responses;
+using Infrastructure.Seed;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -10,6 +12,7 @@ namespace WebApi.Controllers;
 public class FeedbackController (IFeedbackService service) : ControllerBase
 {
     [HttpGet]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<PaginationResponse<List<FeedbackGetDto>>> GetFeedbacks([FromQuery] BaseFilter filter,
         [FromQuery] string language = "En")
     {
@@ -23,12 +26,14 @@ public class FeedbackController (IFeedbackService service) : ControllerBase
     }
 
     [HttpPut("id")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<Response<string>> UpdateFeedback(FeedbackUpdateDto feedbackUpdateDto)
     {
         return await service.UpdateFeedbackAsync(feedbackUpdateDto);
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<Response<string>> DeleteFeedback(int id)
     {
         return await service.DeleteFeedbackAsync(id);

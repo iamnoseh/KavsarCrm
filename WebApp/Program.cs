@@ -65,6 +65,7 @@ builder.Services.AddScoped<IChooseUsService>(sp =>
         sp.GetRequiredService<IMapper>(),
         uploadPath 
     ));
+
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICourseService>(cr => 
     new CourseService(
@@ -72,6 +73,12 @@ builder.Services.AddScoped<ICourseService>(cr =>
         uploadPath
     ));
 
+builder.Services.AddScoped<INewsRepository, NewsRepository>();
+builder.Services.AddScoped<INewsService>(nw=> 
+    new NewsService(
+        nw.GetRequiredService<INewsRepository>(),
+            uploadPath
+        ));
 
 builder.Services.AddAutoMapper(typeof(EntityProfile));
 builder.Services.AddMemoryCache();

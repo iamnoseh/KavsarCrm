@@ -3,31 +3,45 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Http;
 
-namespace Domain.Entities
+namespace Domain.Entities;
+
+public class News : BaseEntity
 {
-    public class News : BaseEntity
-    {
-        [Required]
-        [MaxLength(100, ErrorMessage = "Title cannot be longer than 100 characters.")]
-        public string Title { get; set; }
+    [Required]
+    [MaxLength(100, ErrorMessage = "Title cannot be longer than 100 characters.")]
+    public string TitleTj { get; set; }
 
-        [Required]
-        public string Content { get; set; }
+    [Required]
+    [MaxLength(100, ErrorMessage = "Title cannot be longer than 100 characters.")]
+    public string TitleRu { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
-        public virtual User User { get; set; }
+    [Required]
+    [MaxLength(100, ErrorMessage = "Title cannot be longer than 100 characters.")]
+    public string TitleEn { get; set; }
 
-        public string MediaUrl { get; set; }
+    [Required]
+    public string ContentTj { get; set; }
 
-        [NotMapped]
-        public IFormFile? Media { get; set; }
+    [Required] 
+    public string ContentEn { get; set; }
 
-        public virtual List<Comment> Comments { get; set; } = new();
-        public virtual List<Like> Likes { get; set; } = new();
+    [Required]
+    public string ContentRu { get; set; }
 
+    [Required]
+    public int UserId { get; set; }
 
-        [NotMapped]
-        public int LikeCount => Likes?.Count ?? 0;
-    }
+    [ForeignKey("UserId")] 
+    public virtual User User { get; set; } = null!; 
+
+    public string? MediaUrl { get; set; }
+
+    [NotMapped]
+    public IFormFile? Media { get; set; }
+
+    public List<Comment> Comments { get; set; } = new();
+    public List<Like> Likes { get; set; } = new();
+
+    [NotMapped] 
+    public int LikeCount => Likes?.Count ?? 0;
 }

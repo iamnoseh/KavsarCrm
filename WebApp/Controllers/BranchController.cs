@@ -22,7 +22,7 @@ public class BranchController (IBranchService service) : Controller
     }
 
     [HttpPost]
-    public async Task<Response<string>> CreateBranch(CreateBranchDto branchDto)
+    public async Task<Response<string>> CreateBranch([FromForm]CreateBranchDto branchDto)
     {
         return await service.CreateBranchAsync(branchDto);
     }
