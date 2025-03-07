@@ -9,4 +9,5 @@ public interface ICommentRepository
     Task<int> Create(Comment comment);
     Task<int> Update(Comment comment);
     Task<int> Delete(Comment comment);
+    Task<List<Comment>> GetSubComments(int parentId);
 }

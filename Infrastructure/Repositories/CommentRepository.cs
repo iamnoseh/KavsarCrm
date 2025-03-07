@@ -34,4 +34,10 @@ public class CommentRepository (DataContext context) : ICommentRepository
         context.Comments.Remove(comment);
         return await context.SaveChangesAsync();
     }
+    public async Task<List<Comment>> GetSubComments(int parentId)
+    {
+        return await context.Comments.Where(c => c.PatternCommentId == parentId).ToListAsync();
+    }
+    
+
 }

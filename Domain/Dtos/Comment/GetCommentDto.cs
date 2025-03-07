@@ -10,4 +10,5 @@ public class GetCommentDto
     public int LikeCount { get; set; }
     public int? PatternCommentId { get; set; }
     public int NewsId { get; set; }
+    public List<GetCommentDto> SubComments { get; set; } = new ();
 }

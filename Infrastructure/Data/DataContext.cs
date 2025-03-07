@@ -17,4 +17,15 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
     public DbSet<User> Users { get; set; }
     public DbSet<Feedback> Feedbacks { get; set; }
     public DbSet<Course> Courses { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder); 
+
+        builder.Entity<Comment>()
+            .HasMany(c => c.PatternComments)
+            .WithOne(c => c.PatternComment)
+            .HasForeignKey(c => c.PatternCommentId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }

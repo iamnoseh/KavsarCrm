@@ -710,7 +710,8 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.Comment", "PatternComment")
                         .WithMany("PatternComments")
-                        .HasForeignKey("PatternCommentId");
+                        .HasForeignKey("PatternCommentId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("Comments")
