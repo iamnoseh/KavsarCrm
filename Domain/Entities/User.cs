@@ -21,4 +21,5 @@ public class User : IdentityUser<int>
     public List<Like> Likes { get; set; } = new();
     public List<Comment> Comments { get; set; } = new();
     public List<News> News { get; set; } = new();
+    public List<Feedback> Feedbacks { get; set; } = new();
 }

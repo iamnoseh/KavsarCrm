@@ -15,4 +15,5 @@ public class DataContext(DbContextOptions<DataContext> options) : IdentityDbCont
     public DbSet<News> News { get; set; }
     public DbSet<ChooseUs> ChooseUss{ get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Feedback> Feedbacks { get; set; }
 }

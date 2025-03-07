@@ -42,7 +42,10 @@ builder.Services.AddScoped<IChooseUsRepository, ChooseUsRepository>();
 // builder.Services.AddScoped<IChooseUsService, ChooseUsService>();
 builder.Services.AddScoped<SeedData>();
 
+
 builder.Services.AddScoped<IBranchService, BranchService>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 var uploadPath = builder.Configuration.GetValue<string>("UploadPath") ?? "wwwroot";
