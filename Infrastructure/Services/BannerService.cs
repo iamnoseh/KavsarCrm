@@ -75,7 +75,7 @@ public class BannerService(
         var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
         var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        await using (var fileStream = new FileStream(filePath, FileMode.Create))
         {
             await dto.ImageFile.CopyToAsync(fileStream);
         }

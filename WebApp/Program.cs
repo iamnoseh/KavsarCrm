@@ -43,10 +43,12 @@ builder.Services.AddScoped<IChooseUsRepository, ChooseUsRepository>();
 builder.Services.AddScoped<SeedData>();
 
 
-builder.Services.AddScoped<IBranchService, BranchService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+
+builder.Services.AddScoped<IBranchService, BranchService>();
 builder.Services.AddScoped<IBranchRepository, BranchRepository>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 var uploadPath = builder.Configuration.GetValue<string>("UploadPath") ?? "wwwroot";
 builder.Services.AddScoped<IUserService>(sp =>
@@ -62,6 +64,12 @@ builder.Services.AddScoped<IChooseUsService>(sp =>
         sp.GetRequiredService<IChooseUsRepository>(),
         sp.GetRequiredService<IMapper>(),
         uploadPath 
+    ));
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ICourseService>(cr => 
+    new CourseService(
+    cr.GetRequiredService<ICourseRepository>(),
+        uploadPath
     ));
 
 

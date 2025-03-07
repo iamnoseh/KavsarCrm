@@ -14,7 +14,7 @@ public class AccountController(IAccountService service) : ControllerBase
 {
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<Response<string>> Register(RegisterDto request)
+    public async Task<Response<string>> Register([FromForm]RegisterDto request)
     {
         return await service.Register(request);
     }

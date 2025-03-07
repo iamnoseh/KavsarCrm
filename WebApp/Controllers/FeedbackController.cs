@@ -22,7 +22,7 @@ public class FeedbackController (IFeedbackService service) : ControllerBase
         return await service.CreateFeedbackAsync(feedbackCreateDto);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("id")]
     public async Task<Response<string>> UpdateFeedback(FeedbackUpdateDto feedbackUpdateDto)
     {
         return await service.UpdateFeedbackAsync(feedbackUpdateDto);
@@ -34,7 +34,7 @@ public class FeedbackController (IFeedbackService service) : ControllerBase
         return await service.DeleteFeedbackAsync(id);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("id")]
     public async Task<Response<FeedbackGetDto>> GetFeedbackById(int id, string language = "En")
     {
         return await service.GetFeedbackByIdAsync(id, language);

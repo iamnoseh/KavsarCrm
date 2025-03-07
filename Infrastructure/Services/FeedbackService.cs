@@ -1,8 +1,6 @@
 using System.Net;
 using System.Security.Claims;
-using AutoMapper;
 using Domain.Dtos.Feedback;
-using Domain.Dtos.User;
 using Domain.Entities;
 using Domain.Filters;
 using Infrastructure.Data;
@@ -12,13 +10,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Services;
 
-public class FeedbackService(IFeedbackRepository _feedbackRepository,  
-        IHttpContextAccessor httpContextAccessor, DataContext _context) : IFeedbackService
+public class FeedbackService(IFeedbackRepository feedbackRepository,  
+        IHttpContextAccessor httpContextAccessor, DataContext context) : IFeedbackService
 {
     public async Task<PaginationResponse<List<FeedbackGetDto>>> GetFeedbacksAsync(BaseFilter filter, string language = "En")
     {
         var feedbackType = typeof(Feedback);
-        var feedbacks = await _feedbackRepository.GetAll(filter);
+        var feedbacks = await feedbackRepository.GetAll(filter);
         var totalRecords = feedbacks.Count;
         var feedbacksDto = new List<FeedbackGetDto>();
 
@@ -28,7 +26,7 @@ public class FeedbackService(IFeedbackRepository _feedbackRepository,
             string? profileImagePath = null;
             if (feedback.UserId.HasValue)
             {
-                var user = await _context.Users.FindAsync(feedback.UserId.Value);
+                var user = await context.Users.FindAsync(feedback.UserId.Value);
                 fullName = user != null ? $"{user.FirstName} {user.LastName}" : " ";
                 profileImagePath = user?.ProfileImagePath;
             }
@@ -56,7 +54,7 @@ public class FeedbackService(IFeedbackRepository _feedbackRepository,
     public async Task<Response<FeedbackGetDto>> GetFeedbackByIdAsync(int id, string language = "En")
     {
         var feedbackType = typeof(Feedback);
-        var feedback = await _feedbackRepository.GetById(id);
+        var feedback = await feedbackRepository.GetById(id);
         if (feedback == null)
             return new Response<FeedbackGetDto>(HttpStatusCode.NotFound, "Feedback not found");
 
@@ -64,7 +62,7 @@ public class FeedbackService(IFeedbackRepository _feedbackRepository,
         string? profileImagePath = null;
         if (feedback.UserId.HasValue)
         {
-            var user = await _context.Users.FindAsync(feedback.UserId.Value);
+            var user = await context.Users.FindAsync(feedback.UserId.Value);
             fullName = user != null ? $"{user.FirstName} {user.LastName}" : null;
             profileImagePath = user?.ProfileImagePath;
         }
@@ -93,7 +91,7 @@ public class FeedbackService(IFeedbackRepository _feedbackRepository,
         if (userIdClaim != null)
         {
             userId = int.Parse(userIdClaim.Value);
-            var user = await _context.Users.FindAsync(userId);
+            var user = await context.Users.FindAsync(userId);
             if (user == null)
                 return new Response<string>(HttpStatusCode.Unauthorized, "User not found");
 
@@ -118,7 +116,7 @@ public class FeedbackService(IFeedbackRepository _feedbackRepository,
             CreatedAt = DateTime.UtcNow
         };
 
-        var result = await _feedbackRepository.Create(feedback);
+        var result = await feedbackRepository.Create(feedback);
         return result > 0
             ? new Response<string>("Feedback created successfully")
             : new Response<string>(HttpStatusCode.InternalServerError, "Error creating feedback");
@@ -126,7 +124,7 @@ public class FeedbackService(IFeedbackRepository _feedbackRepository,
 
     public async Task<Response<string>> UpdateFeedbackAsync(FeedbackUpdateDto feedbackUpdateDto)
     {
-        var feedback = await _feedbackRepository.GetById(feedbackUpdateDto.Id);
+        var feedback = await feedbackRepository.GetById(feedbackUpdateDto.Id);
         if (feedback == null)
             return new Response<string>(HttpStatusCode.NotFound, "Feedback not found");
 
@@ -136,7 +134,7 @@ public class FeedbackService(IFeedbackRepository _feedbackRepository,
         feedback.Grade = feedbackUpdateDto.Grade;
         feedback.UpdatedAt = DateTime.UtcNow;
 
-        var result = await _feedbackRepository.Update(feedback);
+        var result = await feedbackRepository.Update(feedback);
         return result > 0
             ? new Response<string>("Feedback updated successfully")
             : new Response<string>(HttpStatusCode.InternalServerError, "Error updating feedback");
@@ -144,11 +142,11 @@ public class FeedbackService(IFeedbackRepository _feedbackRepository,
 
     public async Task<Response<string>> DeleteFeedbackAsync(int id)
     {
-        var feedback = await _feedbackRepository.GetById(id);
+        var feedback = await feedbackRepository.GetById(id);
         if (feedback == null)
             return new Response<string>(HttpStatusCode.NotFound, "Feedback not found");
 
-        var result = await _feedbackRepository.Delete(feedback);
+        var result = await feedbackRepository.Delete(feedback);
         return result > 0
             ? new Response<string>("Feedback deleted successfully")
             : new Response<string>(HttpStatusCode.InternalServerError, "Error deleting feedback");
