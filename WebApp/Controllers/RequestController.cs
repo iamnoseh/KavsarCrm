@@ -1,4 +1,5 @@
 using Domain.Dtos.Request;
+using Domain.Entities;
 using Infrastructure.Interfaces;
 using Infrastructure.Responses;
 using Infrastructure.Seed;

@@ -1,4 +1,5 @@
 using Domain.Dtos.Feedback;
+using Domain.Entities;
 using Domain.Filters;
 using Infrastructure.Interfaces;
 using Infrastructure.Responses;

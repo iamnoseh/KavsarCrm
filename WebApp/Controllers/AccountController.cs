@@ -2,11 +2,10 @@ using Domain.Dtos.Account;
 using Domain.Dtos.Auth;
 using Infrastructure.Interfaces.Account;
 using Infrastructure.Responses;
-using Infrastructure.Seed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers;
+namespace WebApp.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

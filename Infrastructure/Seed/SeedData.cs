@@ -34,11 +34,11 @@ public class SeedData(UserManager<User> userManager, RoleManager<IdentityRole<in
     {
         var newRoles = new List<IdentityRole<int>>()
         {
-            new IdentityRole<int>(Roles.Admin),
-            new IdentityRole<int>(Roles.Manager),
-            new IdentityRole<int>(Roles.User),
-            new IdentityRole<int>(Roles.Student),
-            new IdentityRole<int>(Roles.Teacher),
+            new (Roles.Admin),
+            new (Roles.Manager),
+            new (Roles.User),
+            new (Roles.Student),
+            new (Roles.Teacher),
         };
         
         var roles = await roleManager.Roles.ToListAsync();
@@ -53,14 +53,4 @@ public class SeedData(UserManager<User> userManager, RoleManager<IdentityRole<in
 
         return true;
     }
-}
-
-public static class Roles
-{
-    public const string Admin = "Admin";
-    public const string Manager = "Manager";
-    public const string User = "User";
-    public const string Student = "Student";
-    public const string Teacher = "Teacher";
-    
 }

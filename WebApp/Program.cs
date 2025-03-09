@@ -11,6 +11,7 @@ using Domain.Entities;
 using Infrastructure.Interfaces.Account;
 using Infrastructure.Profiles;
 using Infrastructure.Seed;
+using Infrastructure.Services.RedisMemory;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
@@ -53,6 +54,14 @@ builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 
+//RedisCache
+builder.Services.AddScoped<IRedisMemoryCache, RedisMemoryCache>();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("RedisCache"); 
+    options.InstanceName = "Kavsar_"; 
+});
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 var uploadPath = builder.Configuration.GetValue<string>("UploadPath") ?? "wwwroot";
 builder.Services.AddScoped<IUserService>(sp =>
@@ -81,6 +90,7 @@ builder.Services.AddScoped<INewsRepository, NewsRepository>();
 builder.Services.AddScoped<INewsService>(nw=> 
     new NewsService(
         nw.GetRequiredService<INewsRepository>(),
+        nw.GetRequiredService<IRedisMemoryCache>(),
             uploadPath
         ));
 
